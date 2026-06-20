@@ -57,14 +57,20 @@ export default function ChatView({ role }) {
     }
   };
 
+  const mono = { fontFamily: "'JetBrains Mono', monospace" };
+  const fraunces = { fontFamily: "'Fraunces', serif" };
+
   return (
-    <section className="bg-slate-900 rounded-2xl border border-slate-800 flex flex-col h-[700px] shadow-2xl overflow-hidden">
+    <section className="bg-[#12161D] rounded-lg border border-[#232934] flex flex-col h-[700px] shadow-2xl overflow-hidden">
+      {/* Dossier accent strip, consistent with the rest of the archive */}
+      <div className="h-1 bg-gradient-to-r from-[#C8A24A]/0 via-[#C8A24A]/60 to-[#C8A24A]/0" />
+
       {/* Scrollable Chat History Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-slate-950/50">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 bg-[#0B0E13]">
         {history.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-2">
+          <div className="h-full flex flex-col items-center justify-center text-[#5B6473] space-y-3">
             <svg
-              className="w-12 h-12 text-slate-700"
+              className="w-12 h-12 text-[#232934]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -76,11 +82,17 @@ export default function ChatView({ role }) {
                 d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
               />
             </svg>
-            <p className="text-sm font-medium">
-              Database connection stable. Ready for queries.
+            <p
+              className="text-sm font-medium text-[#8891A0]"
+              style={fraunces}
+            >
+              Archive connection stable
             </p>
-            <p className="text-xs text-slate-600">
-              Your results are isolated to {role} documents.
+            <p
+              className="text-[11px] uppercase tracking-[0.15em] text-[#4B5363]"
+              style={mono}
+            >
+              Results isolated to {role} records
             </p>
           </div>
         ) : (
@@ -91,10 +103,10 @@ export default function ChatView({ role }) {
             >
               {/* Message Bubble styling depends on the sender */}
               <div
-                className={`max-w-[90%] md:max-w-[75%] rounded-2xl p-4 text-sm shadow-md ${
+                className={`max-w-[90%] md:max-w-[75%] rounded-lg p-4 text-sm shadow-md ${
                   msg.sender === "user"
-                    ? "bg-cyan-900/40 text-cyan-50 border border-cyan-700/50 rounded-br-sm"
-                    : "bg-slate-800 text-slate-200 border border-slate-700 rounded-bl-sm"
+                    ? "bg-[#C8A24A]/10 text-[#ECE8DC] border border-[#C8A24A]/40 rounded-br-sm"
+                    : "bg-[#181D26] text-[#ECE8DC] border border-[#232934] rounded-bl-sm"
                 }`}
               >
                 <p className="whitespace-pre-wrap leading-relaxed">
@@ -103,16 +115,31 @@ export default function ChatView({ role }) {
 
                 {/* Document Citations Rendering */}
                 {msg.sources?.length > 0 && (
-                  <div className="mt-4 pt-3 border-t border-slate-700/50 flex flex-wrap gap-2">
-                    <span className="block w-full text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  <div className="mt-4 pt-3 border-t border-[#232934] flex flex-wrap gap-2">
+                    <span
+                      className="block w-full text-[10px] font-bold uppercase tracking-[0.18em] text-[#C8A24A]"
+                      style={mono}
+                    >
                       Verified Citations
                     </span>
                     {msg.sources.map((src, idx) => (
                       <span
                         key={idx}
-                        className="bg-slate-900/80 border border-slate-700 px-2 py-1 rounded text-[11px] font-medium text-slate-300 flex items-center gap-1"
+                        className="bg-[#0B0E13] border border-[#232934] px-2.5 py-1.5 rounded text-[11px] font-medium text-[#8891A0] flex items-center gap-1.5"
+                        style={mono}
                       >
-                        📄 {src}
+                        <svg
+                          className="w-3 h-3 text-[#C8A24A]"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {src}
                       </span>
                     ))}
                   </div>
@@ -125,7 +152,10 @@ export default function ChatView({ role }) {
         {/* Loading Indicator */}
         {isQuerying && (
           <div className="flex justify-start">
-            <p className="text-xs text-cyan-400 font-medium animate-pulse bg-cyan-900/20 border border-cyan-900/50 px-4 py-2 rounded-lg">
+            <p
+              className="text-xs text-[#C8A24A] font-medium animate-pulse bg-[#C8A24A]/10 border border-[#C8A24A]/30 px-4 py-2 rounded-md uppercase tracking-[0.1em]"
+              style={mono}
+            >
               Synthesizing contextual vectors...
             </p>
           </div>
@@ -135,19 +165,19 @@ export default function ChatView({ role }) {
       {/* Query Input Form */}
       <form
         onSubmit={handleQuery}
-        className="p-4 border-t border-slate-800 bg-slate-900 flex gap-3"
+        className="p-4 border-t border-[#232934] bg-[#12161D] flex gap-3"
       >
         <input
           type="text"
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           placeholder="Search the enterprise knowledge base..."
-          className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-5 py-3.5 text-sm text-white focus:border-cyan-500 outline-none transition-colors shadow-inner"
+          className="flex-1 bg-[#0B0E13] border border-[#232934] rounded-md px-5 py-3.5 text-sm text-[#ECE8DC] placeholder:text-[#4B5363] focus:border-[#C8A24A] outline-none transition-colors"
         />
         <button
           type="submit"
           disabled={isQuerying || !question.trim()}
-          className="bg-cyan-600 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold px-8 py-3.5 rounded-xl text-sm hover:bg-cyan-500 transition-all shadow-lg shadow-cyan-900/20 flex items-center gap-2"
+          className="bg-[#C8A24A] disabled:bg-[#1B2029] disabled:text-[#4B5363] hover:bg-[#E3C988] text-[#0B0E13] font-bold px-8 py-3.5 rounded-md text-xs uppercase tracking-[0.12em] transition-all flex items-center gap-2"
         >
           Execute
         </button>

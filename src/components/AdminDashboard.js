@@ -130,48 +130,66 @@ export default function AdminDashboard() {
       (roleFilter === "All" || doc.allowed_roles.includes(roleFilter)),
   );
 
+  const fraunces = { fontFamily: "'Fraunces', serif" };
+  const mono = { fontFamily: "'JetBrains Mono', monospace" };
+
   return (
     <div className="space-y-6">
-      {/* 1. Tab Navigation System */}
-      <div className="flex gap-4 border-b border-slate-800 pb-2">
+      {/* 1. Dossier Tab Navigation — index-tab styling instead of generic pill tabs */}
+      <div className="flex gap-1 border-b border-[#232934]">
         <button
           onClick={() => setView("upload")}
-          className={`px-4 py-2 font-bold text-sm rounded-t-lg transition-colors ${view === "upload" ? "bg-cyan-900/30 text-cyan-400 border-b-2 border-cyan-400" : "text-slate-500 hover:text-slate-300"}`}
+          className={`relative px-5 py-3 font-bold text-xs uppercase tracking-[0.12em] transition-colors rounded-t-md ${view === "upload" ? "bg-[#12161D] text-[#C8A24A]" : "text-[#5B6473] hover:text-[#8891A0]"}`}
         >
           Ingest Data
+          {view === "upload" && (
+            <span className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#C8A24A]" />
+          )}
         </button>
         <button
           onClick={() => setView("manage")}
-          className={`px-4 py-2 font-bold text-sm rounded-t-lg transition-colors ${view === "manage" ? "bg-cyan-900/30 text-cyan-400 border-b-2 border-cyan-400" : "text-slate-500 hover:text-slate-300"}`}
+          className={`relative px-5 py-3 font-bold text-xs uppercase tracking-[0.12em] transition-colors rounded-t-md ${view === "manage" ? "bg-[#12161D] text-[#C8A24A]" : "text-[#5B6473] hover:text-[#8891A0]"}`}
         >
           Data Governance Hub
+          {view === "manage" && (
+            <span className="absolute left-0 right-0 -bottom-px h-[2px] bg-[#C8A24A]" />
+          )}
         </button>
       </div>
 
       {/* 2. Upload Interface View */}
       {view === "upload" && (
-        <section className="bg-slate-900 rounded-2xl p-6 md:p-8 border border-slate-800 shadow-xl">
+        <section className="bg-[#12161D] rounded-lg p-6 md:p-8 border border-[#232934] shadow-xl">
           <div className="mb-8">
-            <h2 className="text-xl font-bold text-white mb-2">
+            <p
+              className="text-[10px] uppercase tracking-[0.25em] text-[#C8A24A] font-semibold mb-2"
+              style={mono}
+            >
+              Step 01
+            </p>
+            <h2
+              className="text-xl font-semibold text-[#ECE8DC] mb-2"
+              style={fraunces}
+            >
               Secure File Ingestion
             </h2>
-            <p className="text-sm text-slate-400">
-              Strictly <b>PDF only</b>. Max size:{" "}
-              <b>{APP_CONFIG.MAX_FILE_SIZE_MB}MB</b>.
+            <p className="text-sm text-[#8891A0]">
+              Strictly <b className="text-[#ECE8DC]">PDF only</b>. Max size:{" "}
+              <b className="text-[#ECE8DC]">{APP_CONFIG.MAX_FILE_SIZE_MB}MB</b>.
             </p>
           </div>
 
           <form onSubmit={handleUpload} className="grid md:grid-cols-2 gap-10">
             {/* Roles Selection Column */}
             <div className="space-y-4">
-              <label className="block text-xs font-bold uppercase tracking-widest text-slate-400">
+              <label className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#8891A0]">
                 Visibility Mapping
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {Object.values(SYSTEM_ROLES).map((role) => (
                   <label
                     key={role}
-                    className={`flex items-center gap-2 p-3 rounded-xl border cursor-pointer text-sm font-medium transition-all ${selectedRoles.includes(role) ? "bg-cyan-900/20 border-cyan-500/50 text-cyan-300" : "bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-700"}`}
+                    className={`flex items-center gap-2 p-3 rounded-md border cursor-pointer text-sm font-medium transition-all ${selectedRoles.includes(role) ? "bg-[#C8A24A]/10 border-[#C8A24A]/50 text-[#E3C988]" : "bg-[#0B0E13] border-[#232934] text-[#5B6473] hover:border-[#3A4250]"}`}
                   >
                     <input
                       type="checkbox"
@@ -190,7 +208,7 @@ export default function AdminDashboard() {
 
             {/* File Input & Submit Column */}
             <div className="space-y-4">
-              <label className="block text-xs font-bold uppercase tracking-widest text-slate-400">
+              <label className="block text-[11px] font-bold uppercase tracking-[0.18em] text-[#8891A0]">
                 Source Document
               </label>
               <input
@@ -198,12 +216,12 @@ export default function AdminDashboard() {
                 type="file"
                 accept=".pdf"
                 onChange={(e) => setFile(e.target.files[0])}
-                className="w-full bg-slate-950 text-slate-300 text-sm border border-slate-800 file:mr-4 file:py-3 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-bold file:bg-cyan-700 file:text-white hover:file:bg-cyan-600 cursor-pointer rounded-xl overflow-hidden transition-all"
+                className="w-full bg-[#0B0E13] text-[#8891A0] text-sm border border-[#232934] file:mr-4 file:py-3 file:px-4 file:rounded-l-md file:border-0 file:text-sm file:font-bold file:uppercase file:tracking-[0.08em] file:bg-[#C8A24A] file:text-[#0B0E13] hover:file:bg-[#E3C988] cursor-pointer rounded-md overflow-hidden transition-all"
               />
               <button
                 type="submit"
                 disabled={!file || uploadStatus?.loading}
-                className="w-full bg-cyan-600 disabled:bg-slate-800 disabled:text-slate-500 text-white font-bold py-3.5 rounded-xl text-sm transition-all shadow-lg shadow-cyan-900/20"
+                className="w-full bg-[#C8A24A] disabled:bg-[#1B2029] disabled:text-[#4B5363] hover:bg-[#E3C988] text-[#0B0E13] font-bold py-3.5 rounded-md text-xs uppercase tracking-[0.12em] transition-all"
               >
                 {uploadStatus?.loading
                   ? "Encrypting & Indexing..."
@@ -213,7 +231,7 @@ export default function AdminDashboard() {
               {/* Status Message Display */}
               {uploadStatus && (
                 <p
-                  className={`text-sm p-4 rounded-xl font-medium border ${uploadStatus.error ? "bg-red-900/20 text-red-400 border-red-900/50" : "bg-cyan-900/20 text-cyan-400 border-cyan-900/50"}`}
+                  className={`text-sm p-4 rounded-md font-medium border ${uploadStatus.error ? "bg-[#C1503F]/10 text-[#E08877] border-[#C1503F]/40" : "bg-[#4FA98C]/10 text-[#7FCBB3] border-[#4FA98C]/40"}`}
                 >
                   {uploadStatus.msg}
                 </p>
@@ -227,18 +245,19 @@ export default function AdminDashboard() {
       {view === "manage" && (
         <section className="space-y-6">
           {/* Filtering Tools */}
-          <div className="flex flex-col sm:flex-row gap-4 bg-slate-900 p-4 rounded-2xl border border-slate-800 shadow-md">
+          <div className="flex flex-col sm:flex-row gap-4 bg-[#12161D] p-4 rounded-lg border border-[#232934]">
             <input
               type="text"
               placeholder="Search knowledge base by filename..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-5 py-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
+              className="flex-1 bg-[#0B0E13] border border-[#232934] rounded-md px-5 py-3 text-sm text-[#ECE8DC] placeholder:text-[#4B5363] focus:outline-none focus:border-[#C8A24A] transition-colors"
             />
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="bg-slate-950 border border-slate-800 rounded-xl px-5 py-3 text-sm text-white focus:outline-none focus:border-cyan-500 transition-colors"
+              className="bg-[#0B0E13] border border-[#232934] rounded-md px-5 py-3 text-sm text-[#ECE8DC] focus:outline-none focus:border-[#C8A24A] transition-colors"
+              style={mono}
             >
               <option value="All">All Departments</option>
               {Object.values(SYSTEM_ROLES).map((r) => (
@@ -254,13 +273,16 @@ export default function AdminDashboard() {
             {filteredDocs.map((doc) => (
               <div
                 key={doc.id}
-                className="group relative bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden hover:border-cyan-500/50 transition-all shadow-xl"
+                className="group relative bg-[#12161D] rounded-lg border border-[#232934] overflow-hidden hover:border-[#C8A24A]/50 transition-all shadow-xl"
               >
+                {/* Dossier tab accent strip */}
+                <div className="h-1 bg-gradient-to-r from-[#C8A24A]/0 via-[#C8A24A]/60 to-[#C8A24A]/0" />
+
                 {/* Visual Thumbnail Area */}
-                <div className="h-40 bg-slate-950 flex items-center justify-center relative">
+                <div className="h-40 bg-[#0B0E13] flex items-center justify-center relative">
                   {/* Default PDF Icon */}
                   <svg
-                    className="w-16 h-16 text-slate-800 transition-transform group-hover:scale-110"
+                    className="w-16 h-16 text-[#232934] transition-transform group-hover:scale-110"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -272,14 +294,14 @@ export default function AdminDashboard() {
                   </svg>
 
                   {/* Hover Overlay Actions */}
-                  <div className="absolute inset-0 bg-slate-950/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-[#0B0E13]/85 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4 backdrop-blur-sm">
                     {/* View/Download Source Link */}
                     <a
                       href={doc.storage_path}
                       target="_blank"
                       rel="noreferrer"
                       title="View Source PDF"
-                      className="p-3 bg-cyan-600 rounded-full text-white hover:bg-cyan-400 transition-colors shadow-lg shadow-cyan-900/50 hover:scale-110"
+                      className="p-3 bg-[#C8A24A] rounded-full text-[#0B0E13] hover:bg-[#E3C988] transition-colors hover:scale-110"
                     >
                       <svg
                         className="w-5 h-5"
@@ -302,7 +324,7 @@ export default function AdminDashboard() {
                         setEditRoles(doc.allowed_roles);
                       }}
                       title="Edit Metadata & Roles"
-                      className="p-3 bg-slate-700 rounded-full text-white hover:bg-slate-500 transition-colors hover:scale-110"
+                      className="p-3 bg-[#232934] rounded-full text-[#ECE8DC] hover:bg-[#3A4250] transition-colors hover:scale-110"
                     >
                       <svg
                         className="w-5 h-5"
@@ -322,7 +344,7 @@ export default function AdminDashboard() {
                     <button
                       onClick={() => handleDelete(doc)}
                       title="Delete Document"
-                      className="p-3 bg-red-900/80 rounded-full text-red-200 hover:bg-red-500 hover:text-white transition-colors hover:scale-110"
+                      className="p-3 bg-[#C1503F]/80 rounded-full text-[#F5D6CF] hover:bg-[#C1503F] hover:text-white transition-colors hover:scale-110"
                     >
                       <svg
                         className="w-5 h-5"
@@ -342,14 +364,17 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* Metadata Display Below Thumbnail */}
-                <div className="p-5 bg-slate-900 border-t border-slate-800">
+                <div className="p-5 bg-[#12161D] border-t border-[#232934]">
                   <p
-                    className="font-bold text-sm text-slate-200 truncate"
+                    className="font-bold text-sm text-[#ECE8DC] truncate"
                     title={doc.file_name}
                   >
                     {doc.file_name}
                   </p>
-                  <p className="text-[10px] text-cyan-500/80 mt-1 uppercase tracking-widest font-bold">
+                  <p
+                    className="text-[10px] text-[#C8A24A] mt-1 uppercase tracking-[0.18em] font-bold"
+                    style={mono}
+                  >
                     {doc.allowed_roles.length} Access Role
                     {doc.allowed_roles.length > 1 ? "s" : ""}
                   </p>
@@ -358,14 +383,26 @@ export default function AdminDashboard() {
             ))}
           </div>
 
+          {/* Empty state — invitation to act, in the archive's own voice */}
+          {filteredDocs.length === 0 && (
+            <div className="text-center py-16 border border-dashed border-[#232934] rounded-lg">
+              <p className="text-sm text-[#5B6473]">
+                No documents match this search.
+              </p>
+            </div>
+          )}
+
           {/* 4. Edit Role/Metadata Modal Layer */}
           {activeDoc && (
-            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-              <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md p-6 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <div className="fixed inset-0 bg-[#0B0E13]/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+              <div className="bg-[#12161D] border border-[#232934] rounded-lg w-full max-w-md p-6 shadow-2xl relative">
+                {/* Dossier tab accent strip */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C8A24A] via-[#E3C988] to-[#C8A24A] rounded-t-lg" />
+
                 {/* Close Modal Button */}
                 <button
                   onClick={() => setActiveDoc(null)}
-                  className="absolute top-5 right-5 text-slate-500 hover:text-white transition-colors"
+                  className="absolute top-5 right-5 text-[#5B6473] hover:text-[#ECE8DC] transition-colors"
                 >
                   <svg
                     className="w-6 h-6"
@@ -382,45 +419,54 @@ export default function AdminDashboard() {
                   </svg>
                 </button>
 
-                <h3 className="text-xl font-bold text-white pr-8 truncate mb-6">
+                <p
+                  className="text-[10px] uppercase tracking-[0.25em] text-[#C8A24A] font-semibold mb-1 mt-2"
+                  style={mono}
+                >
+                  Record Detail
+                </p>
+                <h3
+                  className="text-xl font-semibold text-[#ECE8DC] pr-8 truncate mb-6"
+                  style={fraunces}
+                >
                   Document Metadata
                 </h3>
 
                 {/* Immutal File Stats */}
-                <div className="space-y-3 mb-8 bg-slate-950 p-5 rounded-xl border border-slate-800">
+                <div className="space-y-3 mb-8 bg-[#0B0E13] p-5 rounded-md border border-[#232934]">
                   <p className="text-sm flex justify-between">
-                    <span className="text-slate-500 font-medium">Filename</span>{" "}
-                    <span className="text-slate-300 font-bold truncate max-w-[200px]">
+                    <span className="text-[#5B6473] font-medium">Filename</span>{" "}
+                    <span className="text-[#ECE8DC] font-bold truncate max-w-[200px]">
                       {activeDoc.file_name}
                     </span>
                   </p>
                   <p className="text-sm flex justify-between">
-                    <span className="text-slate-500 font-medium">
+                    <span className="text-[#5B6473] font-medium">
                       File Size
                     </span>{" "}
-                    <span className="text-slate-300 font-bold">
+                    <span className="text-[#ECE8DC] font-bold" style={mono}>
                       {activeDoc.file_size}
                     </span>
                   </p>
                   <p className="text-sm flex justify-between">
-                    <span className="text-slate-500 font-medium">
+                    <span className="text-[#5B6473] font-medium">
                       Indexed On
                     </span>{" "}
-                    <span className="text-slate-300 font-bold">
+                    <span className="text-[#ECE8DC] font-bold" style={mono}>
                       {new Date(activeDoc.uploaded_at).toLocaleDateString()}
                     </span>
                   </p>
                 </div>
 
                 {/* Role Modification Controls */}
-                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#8891A0] mb-4">
                   Modify Access Logic
                 </h4>
                 <div className="grid grid-cols-2 gap-3 mb-8">
                   {Object.values(SYSTEM_ROLES).map((role) => (
                     <label
                       key={role}
-                      className={`flex items-center gap-2 p-3 rounded-lg border cursor-pointer text-xs font-bold transition-all ${editRoles.includes(role) ? "bg-cyan-900/30 border-cyan-500 text-cyan-300" : "bg-slate-950 border-slate-800 text-slate-500 hover:border-slate-700"}`}
+                      className={`flex items-center gap-2 p-3 rounded-md border cursor-pointer text-xs font-bold transition-all ${editRoles.includes(role) ? "bg-[#C8A24A]/15 border-[#C8A24A] text-[#E3C988]" : "bg-[#0B0E13] border-[#232934] text-[#5B6473] hover:border-[#3A4250]"}`}
                     >
                       <input
                         type="checkbox"
@@ -439,7 +485,7 @@ export default function AdminDashboard() {
                 {/* Submit Edits */}
                 <button
                   onClick={handleSaveRoles}
-                  className="w-full bg-cyan-600 text-white font-bold py-3.5 rounded-xl hover:bg-cyan-500 transition-colors shadow-lg shadow-cyan-900/20"
+                  className="w-full bg-[#C8A24A] text-[#0B0E13] font-bold py-3.5 rounded-md hover:bg-[#E3C988] transition-colors text-xs uppercase tracking-[0.12em]"
                 >
                   Apply Architecture Updates
                 </button>

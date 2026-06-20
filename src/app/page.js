@@ -1,4 +1,3 @@
-// src/app/page.js
 "use client";
 
 import { useState } from "react";
@@ -26,7 +25,7 @@ export default function AppRouter() {
 
   // 2. Authenticated View: The user has passed the passcode check.
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col min-h-screen bg-[#0B0E13] text-[#ECE8DC]">
       {/* Global Navigation Bar passes the current role and logout handler */}
       <Navigation
         role={activeSessionRole}
